@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+     http://www.springframework.org/schema/aop
+     http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+    <!--启动AspectJ自动代理-->
+    <aop:aspectj-autoproxy/>
+
+    <bean id="carController" class="com.wusiq.controller.CarController"></bean>
+    <bean id="carAspect" class="com.wusiq.aspect.CarAspect"></bean>
+
+    <aop:config>
+        <aop:aspect ref="carAspect">
+            <aop:pointcut id="carMove" expression="execution(* com.wusiq.controller.CarController.carMove(..))"></aop:pointcut>
+            <aop:before method="beforeCarMove" pointcut-ref="carMove"></aop:before>
+            <aop:after method="afterCarMove" pointcut-ref="carMove"></aop:after>
+            <aop:after-returning method="beforeReturn" pointcut-ref="carMove"></aop:after-returning>
+            <aop:after-throwing method="beforeThrowing" pointcut-ref="carMove"></aop:after-throwing>
+        </aop:aspect>
+    </aop:config>
+
+</beans>
